@@ -27,14 +27,15 @@ var fight = function (enemyName) {
       if (confirmSkip) {
         window.alert(playerName + " has decided to skip this fight. Goodbye!");
         // subtract money from playerMoney for skipping
-        playerMoney = playerMoney - 10;
+        playerMoney = Math.max(0, playerMoney - 10);
         console.log("Player money remaining: " + playerMoney);
         break;
       }
     }
 
+    var damage = randomNumber(playerAttack - 3, playerAttack);
     // Subtract the value of "playerAttack" from the value of "enemyHealth".
-    enemyHealth = enemyHealth - playerAttack;
+    enemyHealth = Math.max(0, enemyHealth - damage);
     // Log a resulting message to the console so we know that it worked.
     console.log(
       playerName +
@@ -56,7 +57,7 @@ var fight = function (enemyName) {
       window.alert(enemyName + " still has " + enemyHealth + " health left.");
     }
 
-    playerHealth = playerHealth - enemyAttack;
+    playerHealth = Math.max(0, playerHealth - damage);
     // Log a resulting message to the console so we know that it worked.
     console.log(
       enemyName +
@@ -90,7 +91,7 @@ var startGame = function () {
 
       var pickedEnemyName = enemyNames[i];
 
-      enemyHealth = 50;
+      enemyHealth = randomNumber(40, 60);
       //debugger;
       fight(pickedEnemyName);
 
@@ -181,7 +182,7 @@ var shop = function () {
       break;
     default:
       window.alert("You did not pick a valid option. Try again.");
-      // call shop() again to fore player to pick a valid option
+      // call shop() again to force player to pick a valid option
       shop();
       break;
   }
@@ -192,6 +193,13 @@ console.log("Our robot's name is " + playerName);
 function fight() {
   window.alert("The fight has begun!");
 }
+
+// function to generate a random numeric value
+var randomNumber = function (min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+  return value;
+};
 
 // start the game when the page loads
 startGame();
