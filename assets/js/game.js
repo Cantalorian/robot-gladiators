@@ -1,35 +1,38 @@
 // function to generate a random numeric value
 var randomNumber = function (min, max) {
-  var value = Math.floor(Math.random() * (max - min + 1) + min);
+  var value = Math.floor(Math.random() * (max - min) + min);
 
   return value;
 };
 
+// funtion to check if player wants to fight or skip
 var fightOrSkip = function () {
   var promptFight = window.prompt(
     "Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose."
   );
 
-  promptFight = promptFight.toLowerCase();
-
+  // validate prompt answer
   if (promptFight === "" || promptFight === null) {
     window.alert("You need to provide a valid answer! Please try again.");
     return fightOrSkip();
   }
 
+  promptFight = promptFight.toLowerCase();
+
   if (promptFight === "skip") {
     var confirmSkip = window.confirm("Are you sure you'd like to quit?");
 
+    // if yes (true), Leave fight
     if (confirmSkip) {
       window.alert(
         playerInfo.name + " has decided to skip this fight. Goodbye!"
       );
 
-      playerInfo.money = playerInfo.money - 10;
+      playerInfo.money = MAth.max(0, playerInfo.money - 10);
       return true;
-      shop();
     }
   }
+  return false;
 };
 
 var fight = function (enemy) {
@@ -117,6 +120,8 @@ var startGame = function () {
   playerInfo.reset();
 
   for (var i = 0; i < enemyInfo.length; i++) {
+    console.log(playerInfo);
+
     if (playerInfo.health > 0) {
       window.alert("Welcome to Robot Gladiators! Round " + (i + 1));
 
@@ -125,7 +130,8 @@ var startGame = function () {
       var pickedEnemyObj = enemyInfo[i];
 
       pickedEnemyObj.health = randomNumber(40, 60);
-      //debugger;
+
+      console.log(pickedEnemyObj);
       fight(pickedEnemyObj);
 
       // if we're not at the last enemy in the array
@@ -182,15 +188,6 @@ var endGame = function () {
     startGame();
   } else {
     window.alert("Thank you for playing Robot Gladiators! Come back soon!");
-  }
-
-  // if player is still alive, player wins!
-  if (playerInfo.health > 0) {
-    window.alert(
-      "Great job, you've survived the game! You now have a score of " +
-        playerInfo.money +
-        "."
-    );
   }
 };
 
